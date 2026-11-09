@@ -388,7 +388,72 @@ async def boucle_jeu():
 # ════════════════════════════════════════════════════════════════════
 #  PROGRAMME PRINCIPAL
 # ════════════════════════════════════════════════════════════════════
+def envoyer_touche(key):
+    """Simule l'appui sur une touche du clavier."""
+    pygame.event.post(pygame.event.Event(pygame.KEYDOWN, key=key))
+
+def installer_tactile():
+    """Swipe + tap sur le canvas, et boutons fléchés à l'écran (téléphone)."""
+    try:
+        from pyscript import document
+        from pyodide.ffi import create_proxy
+    except Exception as e:
+        print("Tactile indisponible :", e)
+        return
+
+    canvas = document.getElementById("canvas")
+    etat = {"x": 0, "y": 0, "fait": False}
+    SEUIL = 20  # distance minimale (pixels) pour compter comme un swipe
+
+    def touch_start(e):
+        e.preventDefault()
+        t = e.changedTouches.item(0)
+        etat["x"], etat["y"], etat["fait"] = t.clientX, t.clientY, False
+
+    def touch_move(e):
+        e.preventDefault()
+        if etat["fait"]:
+            return
+        t = e.changedTouches.item(0)
+        dx = t.clientX - etat["x"]
+        dy = t.clientY - etat["y"]
+        if max(abs(dx), abs(dy)) < SEUIL:
+            return
+        etat["fait"] = True
+        if abs(dx) > abs(dy):
+            envoyer_touche(pygame.K_RIGHT if dx > 0 else pygame.K_LEFT)
+        else:
+            envoyer_touche(pygame.K_DOWN if dy > 0 else pygame.K_UP)
+
+    def touch_end(e):
+        e.preventDefault()
+        if not etat["fait"]:
+            # simple tap : commencer (ESPACE) ou rejouer (R)
+            envoyer_touche(pygame.K_SPACE)
+            envoyer_touche(pygame.K_r)
+
+    canvas.addEventListener("touchstart", create_proxy(touch_start))
+    canvas.addEventListener("touchmove", create_proxy(touch_move))
+    canvas.addEventListener("touchend", create_proxy(touch_end))
+
+    def lier_bouton(id_bouton, actions):
+        bouton = document.getElementById(id_bouton)
+        if bouton is None:
+            return
+        def appui(e):
+            e.preventDefault()
+            for k in actions:
+                envoyer_touche(k)
+        bouton.addEventListener("pointerdown", create_proxy(appui))
+
+    lier_bouton("btn-up",    [pygame.K_UP])
+    lier_bouton("btn-down",  [pygame.K_DOWN])
+    lier_bouton("btn-left",  [pygame.K_LEFT])
+    lier_bouton("btn-right", [pygame.K_RIGHT])
+    lier_bouton("btn-ok",    [pygame.K_SPACE, pygame.K_r])
+
 async def main():
+    installer_tactile()
     if not await menu_principal():
         return
     while await boucle_jeu():
