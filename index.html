@@ -15,7 +15,7 @@
             font-family: Arial, sans-serif;
             margin-top: 30px;
         }
-        canvas {
+        #canvas {
             margin-top: 20px;
             border: 2px solid #50c850;
         }
@@ -23,6 +23,9 @@
 </head>
 <body>
     <h1>Welcome to Snake Game</h1>
+    <p>Le chargement prend 10 à 30 secondes... puis clique sur le jeu et appuie sur ESPACE.</p>
+
+    <canvas id="canvas" width="600" height="400"></canvas>
 
     <script type="py" src="./main.py" config='{"packages": ["pygame-ce"]}'></script>
 </body>
