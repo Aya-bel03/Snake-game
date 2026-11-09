@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Snake Game en Python</title>
+
     
-    <!-- PyScript CSS & JS -->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.9.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.9.1/core.js"></script>
 </head>
 <body>
     <h1>Snake Game en Python</h1>
     
-    <!-- Configuration intégrée pour charger pygame-ce et numpy -->
-    <script type="py-config">
-        packages = ["pygame-ce", "numpy"]
+
+    
+    <script type="py" config='{"packages": ["pygame-ce", "numpy"]}'>
+        import micropip
+        await micropip.install(["pygame-ce", "numpy"])
+        
+        
     </script>
 
-    <!-- Exécution du code Python -->
     <script type="py" src="./main.py"></script>
 </body>
 </html>
