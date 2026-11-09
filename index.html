@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title> Snake Game </title>
-    
-    <!-- Styles CSS et scripts PyScript -->
+    <title>Snake Game</title>
+
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.9.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.9.1/core.js"></script>
-    
+
     <style>
         body {
             background-color: #0f140a;
@@ -17,26 +15,15 @@
             font-family: Arial, sans-serif;
             margin-top: 30px;
         }
-        /* Définition de la zone d'affichage du jeu dans le navigateur */
-        #game-canvas {
+        canvas {
             margin-top: 20px;
             border: 2px solid #50c850;
         }
     </style>
 </head>
 <body>
-    <h1> Welcome to Snake Game </h1>
-    
-    <!-- Zone d'affichage des graphismes Pygame -->
-    <canvas id="game-canvas" width="600" height="400"></canvas>
+    <h1>Welcome to Snake Game</h1>
 
-    <!-- Configuration PyScript pour installer les paquets nécessaires -->
-    <script type="py" config='{"packages": ["pygame-ce", "numpy"]}'>
-        import micropip
-        await micropip.install(["pygame-ce", "numpy"])
-    </script>
-
-    <!-- Exécution du fichier Python principal -->
-    <script type="py" src="./main.py"></script>
+    <script type="py" src="./main.py" config='{"packages": ["pygame-ce"]}'></script>
 </body>
 </html>
